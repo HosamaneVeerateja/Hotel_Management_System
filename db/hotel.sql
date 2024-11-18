@@ -32,14 +32,7 @@ CREATE TABLE Food (
     availability BOOLEAN DEFAULT TRUE
 );
 
--- 4. Drivers Table
-CREATE TABLE Drivers (
-    driver_id INT AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(50) NOT NULL,
-    available BOOLEAN DEFAULT TRUE
-);
-
--- 5. Employees Table
+-- 4. Employees Table
 CREATE TABLE Employees (
     emp_id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(50) NOT NULL,
@@ -48,7 +41,7 @@ CREATE TABLE Employees (
     salary DECIMAL(10, 2) NOT NULL
 );
 
--- 6. Bookings Table (Room Bookings)
+-- 5. Bookings Table (Room Bookings)
 CREATE TABLE Bookings (
     booking_id INT AUTO_INCREMENT PRIMARY KEY,
     user_id INT NOT NULL,
@@ -60,7 +53,7 @@ CREATE TABLE Bookings (
     FOREIGN KEY (room_id) REFERENCES Rooms(room_id) ON DELETE SET NULL
 );
 
--- 7. FoodOrders Table
+-- 6. FoodOrders Table
 CREATE TABLE FoodOrders (
     order_id INT AUTO_INCREMENT PRIMARY KEY,
     user_id INT NOT NULL,
@@ -71,19 +64,6 @@ CREATE TABLE FoodOrders (
     order_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (user_id) REFERENCES Users(user_id),
     FOREIGN KEY (food_id) REFERENCES Food(food_id) ON DELETE SET NULL
-);
-
--- 8. DriverBookings Table
-CREATE TABLE DriverBookings (
-    driver_booking_id INT AUTO_INCREMENT PRIMARY KEY,
-    user_id INT NOT NULL,
-    driver_id INT NOT NULL,
-    location VARCHAR(50),
-    destination VARCHAR(50),
-    booking_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    status ENUM('confirmed', 'cancelled') DEFAULT 'confirmed',
-    FOREIGN KEY (user_id) REFERENCES Users(user_id),
-    FOREIGN KEY (driver_id) REFERENCES Drivers(driver_id) ON DELETE SET NULL
 );
 
 -- Insert Sample Data
@@ -108,13 +88,6 @@ VALUES
 ('Pasta', 250.00, TRUE),
 ('Burger', 150.00, TRUE);
 
--- Insert Driver Data
-INSERT INTO Drivers (name, available) 
-VALUES 
-('Driver 1', TRUE), 
-('Driver 2', TRUE), 
-('Driver 3', TRUE);
-
 -- Insert Employee Data
 INSERT INTO Employees (name, dob, designation, salary) 
 VALUES 
@@ -130,11 +103,6 @@ VALUES
 INSERT INTO FoodOrders (user_id, food_id, quantity, total_amount, status) 
 VALUES 
 (2, 1, 2, 600.00, 'preparing');
-
--- Insert Driver Bookings Data
-INSERT INTO DriverBookings (user_id, driver_id, location, destination, status) 
-VALUES 
-(2, 1, 'Hotel', 'Airport', 'confirmed');
 
 -- Queries for Testing
 
@@ -152,6 +120,3 @@ SELECT * FROM Bookings WHERE user_id = 2;
 
 -- Fetch Ordered Food Details
 SELECT * FROM FoodOrders WHERE user_id = 2;
-
--- Fetch Driver Booking History
-SELECT * FROM DriverBookings WHERE user_id = 2;
